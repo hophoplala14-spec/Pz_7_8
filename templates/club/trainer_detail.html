@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}{{ trainer.full_name }}{% endblock %}
+{% block content %}
+<h1>{{ trainer.full_name }}</h1>
+<p class="lead">{{ trainer.specialization }}</p>
+<p> {{ trainer.phone }}</p>
+<h3 class="mt-4">Расписание</h3>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr><th>Занятие</th><th>День</th><th>Время</th><th>Зал</th></tr>
+    </thead>
+    <tbody>
+        {% for cls in trainer.classes.all %}
+            <tr>
+                <td>{{ cls.name }}</td>
+                <td>{{ cls.get_day_of_week_display }}</td>
+                <td>{{ cls.time|time:"H:i" }}</td>
+                <td>{{ cls.room }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">Занятий нет.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

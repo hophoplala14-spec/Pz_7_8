@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load club_tags %}
+{% block title %}Расписание занятий{% endblock %}
+{% block content %}
+<h1 class="mb-4">Расписание занятий</h1>
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <select name="day" class="form-select">
+            <option value="">Все дни</option>
+            {% for code, label in days %}
+                <option value="{{ code }}" {% if code == selected_day %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2"><button type="submit" class="btn btn-primary w-100">Фильтр</button></div>
+</form>
+<div class="row">
+    {% for cls in classes %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ cls.name }}</h5>
+                    <p class="text-muted mb-1">{{ cls.get_day_of_week_display }}, {{ cls.time|time:"H:i" }} · Зал {{ cls.room }}</p>
+                    <p class="mb-1"><strong>Тренер:</strong> {{ cls.trainer.full_name }}</p>
+                    <p class="mb-0"><strong>Записано:</strong> {{ cls.clients.count }} чел.</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12"><div class="alert alert-info">Нет занятий.</div></div>
+    {% endfor %}
+</div>
+<hr class="my-5">
+<h3 class="mb-3">Статистика</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            Всего тренеров в клубе: <strong>{% total_trainers %}</strong>
+        </div>
+    </div>
+    <div class="col-md-6">
+        {% show_popular_classes 3 %}
+    </div>
+</div>
+{% endblock %}

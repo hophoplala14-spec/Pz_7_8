@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Наши тренеры{% endblock %}
+{% block content %}
+<h1 class="mb-4">Наши тренеры</h1>
+<div class="row">
+    {% for trainer in trainers %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ trainer.full_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ trainer.specialization }}</h6>
+                    <p class="card-text">{{ trainer.phone }}</p>
+                    <p class="card-text"><strong>Занятий:</strong> {{ trainer.classes.count }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{% url 'club:trainer_detail' trainer.pk %}" class="btn btn-primary w-100">Посмотреть расписание</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12"><div class="alert alert-info">Тренеров пока нет.</div></div>
+    {% endfor %}
+</div>
+{% endblock %}

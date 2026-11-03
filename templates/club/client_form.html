@@ -1,0 +1,49 @@
+<form method="post" novalidate>
+    {% csrf_token %}
+
+     {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Пожалуйста, исправьте следующие ошибки:</strong>
+            <ul class="mb-0">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <!-- Поля клиента, которые генерирует Django -->
+    {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger">{{ field.errors.0 }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <hr>
+    <h5 class="mb-3">Абонемент (опционально)</h5>
+    <div class="mb-3">
+        <label class="form-label">Тип абонемента</label>
+        <select name="membership_type" class="form-select">
+            <option value="">— без абонемента —</option>
+            <option value="month">Месяц</option>
+            <option value="year">Год</option>
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Дата начала</label>
+            <input type="date" name="start_date" class="form-control">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Дата окончания</label>
+            <input type="date" name="end_date" class="form-control">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+</form>
